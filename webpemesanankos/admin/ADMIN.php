@@ -1,3 +1,14 @@
+<?php
+
+ include 'koneksi.php';
+
+ // lakukan query
+ $query  = "SELECT * FROM kamar";
+
+
+ $result = $koneksi->query($query);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -73,13 +84,7 @@
                         </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">TAMBAHAKAN PAKET KOS</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
+                               <button class="btn btn-primary mb-3" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">TAMBAHKAN PAKET</button> 
                             </div>
                         <div class="card mb-4">
                             <div class="card-header">
@@ -90,15 +95,75 @@
                                 <table id="datatablesSimple" border=1>
                                     <thead>
                                         <tr>
+                                            <th>id kamar</th>
                                             <th>PAKET KOS</th>
                                             <th>HARGA</th>
                                             <th>LUAS</th>
                                             <th>FASILITAS</th>
-                                           <th>STOOK</th>
+                                           <th>GAMBAR</th>
+                                           <th>AKSI</th>
                                         </tr>
                                     </thead>
+                                                            
+                             <?php while ($fetch = $result->fetch_assoc()) : ?>
+                               
+                                        <tr>
+                                            <!-- Menggunakan Nullable Operator (??) -->
+                                            <td><?= $fetch["id_kamar"] ?? '-' ?></td>
+                                            <!-- Metode Tenary -->
+                                            <td><?= $fetch['paket_kamar'] == null ? '-' : $fetch['paket_kamar'] ?></td>
+                                            <td><?= $fetch['harga'] ?? '-' ?></td>
+                                            <td><?= $fetch['luas_kamar']?? '-'?></td>
+                                            <td><?= $fetch['fasilitas']?? '-'?></td>
+                                            <td><img src="img/<?= $fetch['gambar'] ?? '-' ?>" width="100"></td> 
+                                            <td>
+                                                <a href="formedit.php?id=<?= $fetch['id_kamar'] ?>" class="btn btn-success mb-1">
+                                                    Edit
+                                                </a>
+
+                                                <form action="hapuspaket.php" method="post">
+                                                    <input type="hidden" name="id_kamar" value="<?= $fetch['id_kamar'] ?>">
+                                                    <input type="submit" value="hapus" class="btn btn-danger">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile ?>
+                                 </table>
+                                <!-- Modal -->
+                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                             <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Static Backdrop Modal</h5>
+                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="tambahpaket.php" method="post" enctype="multipart/form-data">
+                                            <div class="mb-3"><label for="namapaket">NAMA PAKET</label><input class="form-control form-control-solid" name="namapaket" type="text" placeholder="masukan nama paket">
+                                            </div>
+                                            <div class="mb-3"><label for="harga">harga</label><input class="form-control form-control-solid" name="harga" type="text" placeholder="harga">
+                                            </div>
+                                            <div class="mb-3"><label for="luas">luas</label><input class="form-control form-control-solid" name="luas" type="text" placeholder="luas">
+                                            </div>
+                                            <div class="mb-3"><label for="gambar">gambar</label><input class="form-control form-control-solid" name="gambar" type="file" placeholder="gambar">
+                                            </div>
+                                           <div class="mb-3"><label for="fasilitas">fasilitas</label><input class="form-control form-control-solid" name="fasilitas" type="text" placeholder="fasilitas">
+                                            </div>
+                                           <div class="mb-3"><label for="alamat">alamat</label><input class="form-control form-control-solid" name="alamat" type="text" placeholder="alamat">
+                                            </div>
+                                    
+                                    <div class="modal-footer"><button class="btn btn-secondary" type="botton" data-bs-dismiss="modal">TUTUP</button><button class="btn btn-primary" type="submit" action="tambahpaket.php">SIMPAN</button>
+                                    </div>
+                                </div>
+                                </form>
+                                </div>
+                               
                                 
-                                </table>
+                            </div>
+                        </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

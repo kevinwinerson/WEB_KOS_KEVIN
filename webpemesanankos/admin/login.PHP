@@ -1,3 +1,34 @@
+ <?php
+
+    include "koneksi.php";
+
+    session_start();
+
+    if (@$_SESSION['telah_login']) {
+        include 'admin.php';
+    } 
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $nama = $_POST['name'];
+        $password = $_POST['password'];
+
+        $sql = "SELECT * FROM pemilik WHERE nama = '$nama' AND password = '$password' ";
+
+        $query = $koneksi->query($sql);
+
+        $result = $query->fetch_assoc();
+
+        if ($query->num_rows == 1) {
+            // jika username dan password ditemukan
+            $_SESSION['telah_login'] = TRUE;
+
+            header("location: admin.php");
+        } else {
+            echo "<script>alert('username dan password salah')</script>";
+        }
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,6 +42,7 @@
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="bg-primary">
+       
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
@@ -20,17 +52,18 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                                <label for="inputEmail">USER NAME</label>
+                                                <input class="form-control" type="text" name="name" placeholder="Masukan Username"/>
+                                                <label >USER NAME</label>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
-                                                <label for="inputPassword">password</label>
+                                                <label >password</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <a class="btn btn-primary" href="index.html">Login</a>
+                                                 <button type="submit">Login</button>
                                             </div>
                                         </form>
                                     </div>

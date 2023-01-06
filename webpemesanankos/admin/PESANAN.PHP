@@ -1,3 +1,14 @@
+<?php
+
+ include 'koneksi.php';
+
+ // lakukan query
+ $query  = "SELECT * FROM Pesanan";
+
+
+ $result = $koneksi->query($query);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -82,14 +93,40 @@
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>PAKET KOS</th>
-                                            <th>HARGA</th>
-                                            <th>LUAS</th>
-                                            <th>FASILITAS</th>
-                                           <th>STOOK</th>
+                                            <th>di pemesan</th>
+                                            <th>nama pemesan</th>
+                                            <th>no hp</th>
+                                            <th>paket kamar</th>
+                                            <th>id kamar</th>
+                                           <th>tgl pemesanan</th>
+                                           <th>aksi</th>
                                         </tr>
                                     </thead>
-                                
+                                 <?php while ($fetch = $result->fetch_assoc()) : ?>
+                               
+                                        <tr>
+                                            <!-- Menggunakan Nullable Operator (??) -->
+                                            <td><?= $fetch["id_pesanan"] ?? '-' ?></td>
+                                            <!-- Metode Tenary -->
+                                            <td><?= $fetch['nama_pemesan'] == null ? '-' : $fetch['nama_pemesan'] ?></td>
+                                            <td><?= $fetch['no_hp'] ?? '-' ?></td>
+                                            <td><?= $fetch['paket_kamar']?? '-'?></td>
+                                            <td><?= $fetch['id_kamar']?? '-'?></td>
+                                            <td><?= $fetch['tanggal']?? '-'?></td>
+                                              <td>
+                                                <form action="tambahpenyewa.php" method="post">
+                                                <input type="hidden" name="nama_pemesan" value="<?= $fetch['nama_pemesan'] ?>">
+                                                <input type="hidden" name="no_hp" value="<?= $fetch['no_hp'] ?>">
+                                                <input type="hidden" name="paket_kamar" value="<?= $fetch['paket_kamar'] ?>">
+                                                <input type="submit" value="tambahkan penyewa" class="btn btn-success mb-1">
+                                                </form>
+                                                <form action="hapuspesanan.php" method="post">
+                                                    <input type="hidden" name="id_pesanan" value="<?= $fetch['id_pesanan'] ?>">
+                                                    <input type="submit" value="hapus" class="btn btn-danger">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile ?>
                                 </table>
                             </div>
                         </div>

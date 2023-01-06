@@ -1,3 +1,14 @@
+<?php
+
+ include 'koneksi.php';
+
+ // lakukan query
+ $query  = "SELECT * FROM penyewa";
+
+
+ $result = $koneksi->query($query);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -73,13 +84,7 @@
                         </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Primary Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
+                                
                             </div>
                         <div class="card mb-4">
                             <div class="card-header">
@@ -90,14 +95,33 @@
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>PAKET KOS</th>
-                                            <th>HARGA</th>
-                                            <th>LUAS</th>
-                                            <th>FASILITAS</th>
-                                           <th>STOOK</th>
+                                            <th>id penyewa</th>
+                                            <th>nama penyewa</th>
+                                            <th>no hp</th>
+                                            <th>paket kamar</th>
+                                            <th>aksi</th>
                                         </tr>
                                     </thead>
-                                
+                                <?php while ($fetch = $result->fetch_assoc()) : ?>
+                               
+                                        <tr>
+                                            <!-- Menggunakan Nullable Operator (??) -->
+                                            <td><?= $fetch["id_penyewa"] ?? '-' ?></td>
+                                            <!-- Metode Tenary -->
+                                            <td><?= $fetch['nama_penyewa'] == null ? '-' : $fetch['nama_penyewa'] ?></td>
+                                            <td><?= $fetch['no_hp'] ?? '-' ?></td>
+                                            <td><?= $fetch['paket_kamar']?? '-'?></td>
+                                              <td>  <a href="editpesanan.php?id=<?= $fetch['id_penyewa'] ?>" class="btn btn-success mb-1">
+                                                    Edit
+                                                </a>
+
+                                                <form action="hapuspenyewa.php" method="post">
+                                                    <input type="hidden" name="id_penyewa" value="<?= $fetch['id_penyewa']?>">
+                                                    <input type="submit" value="hapus" class="btn btn-danger">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile ?>
                                 </table>
                             </div>
                         </div>
