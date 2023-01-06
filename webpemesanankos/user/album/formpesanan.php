@@ -1,12 +1,13 @@
 <?php
 
- include 'koneksi.php';
+include 'koneksi.php';
 
- // lakukan query
- $query  = "SELECT * FROM kamar";
+$id = $_GET['id'];
 
+$sql = "SELECT * FROM kamar WHERE id_kamar='".$id."'";
+$query = $koneksi->query($sql);
 
- $result = $koneksi->query($query);
+$result = $query->fetch_assoc();
 
 ?>
 <!doctype html>
@@ -17,7 +18,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>KOS KEVIN SENTOSA KAYA</title>
+    <title>kos kevin</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
 
@@ -52,14 +53,13 @@
       <div class="row">
         <div class="col-sm-8 col-md-7 py-4">
           <h4 class="text-white">About</h4>
-          <p class="text-muted">WEB PEMESANAN KOS KEVIN SENTOSA KAYA
-          </p>
+          <p class="text-muted">kami tidak meremehkan penyewa meski fetishnya aneh aneh.</p>
         </div>
         <div class="col-sm-4 offset-md-1 py-4">
           <h4 class="text-white">Contact</h4>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-white">WA :081254742875</a></li>
-            <li><a href="#" class="text-white">FACEBOOK</a></li>
+            <li><a href="#" class="text-white">Follow on Twitter</a></li>
+            <li><a href="#" class="text-white">Like on Facebook</a></li>
             <li><a href="#" class="text-white">Email me</a></li>
           </ul>
         </div>
@@ -70,7 +70,7 @@
     <div class="container">
       <a href="#" class="navbar-brand d-flex align-items-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        <strong>KOS KEVIN SENTOSA KAYA</strong>
+        <strong>kos kevin</strong>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -81,47 +81,19 @@
 
 <main>
 
-  <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">KEVIN SENTOSA KAYA</h1>
-        <p class="lead text-muted">DISINI KAMI MENYEDIAN BERBAGAI TIPE KOS UNTUK BEBAGAI TIPE PELANGGAN</p>
-        <p>
-          <a href="#" class="btn btn-primary my-2">hubungi kami</a>
-        </p>
-      </div>
-    </div>
-  </section>
+  
 
   <div class="album py-5 bg-light">
     <div class="container">
-
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <?php while ($fetch = $result->fetch_assoc()) : ?>
-        <div class="col">
-          <div class="card shadow-sm">
-            <img src="img/<?= $fetch['gambar'] ?? '-' ?>" width="100%" height="225">
-
-            <div class="card-body">
-               <p class="card-text"><?= $fetch['paket_kamar'] == null ? '-' : $fetch['paket_kamar'] ?></p>
-              <p class="card-text"><?= $fetch['fasilitas']?? '-'?></p>
-              <p class="card-text">Rp<?= $fetch['harga']?? '-'?></p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  
-                   <a href="formpesanan.php?id=<?= $fetch['id_kamar'] ?>" class="btn btn-success mb-1">
-                                                    pesan
-                                                </a>
-                </div>
-                <small class="text-muted"></small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <?php endwhile ?>
-        
-        
-      </div>
+<form action="tambahpesanan.php" method="post">
+    <input type="hidden" name="id_kamar" value="<?= $result['id_kamar'] ?>">
+    <input type="hidden" name="paket_kamar" value="<?= $result['paket_kamar'] ?>">
+    <div class="mb-3" > <label for="nama_pemesan">nama</label><input class="form-control" id="nama_pemesan" name="nama_pemesan"type="text" ></div>
+    <div class="mb-3"><label for="no_hp">no hp</label><input class="form-control" id="no_hp" name="no_hp" type="text" ></div>
+    <div class="mb-3"><button class="btn btn-primary" type="submit" action="tambahpesanan.php">SIMPAN</button></div>
+   
+</form>
+      
     </div>
   </div>
 
@@ -132,7 +104,7 @@
     <p class="float-end mb-1">
       <a href="#">Back to top</a>
     </p>
-    <p class="mb-1">make by kevin winerson</p>
+    <p class="mb-1">make by &copy; kevin winerson</p>
   </div>
 </footer>
 
