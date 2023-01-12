@@ -2,10 +2,11 @@
 
     include "koneksi.php";
 
-    session_start();
+
+   session_start();
 
     if (@$_SESSION['telah_login']) {
-        include 'admin.php';
+        include 'ADMIN.php';
     } 
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -22,7 +23,7 @@
             // jika username dan password ditemukan
             $_SESSION['telah_login'] = TRUE;
 
-            header("location: admin.php");
+            header("location: /webpemesanankos/admin/ADMIN.php");
         } else {
             echo "<script>alert('username dan password salah')</script>";
         }
@@ -58,12 +59,12 @@
                                                 <label >USER NAME</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
+                                                <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Password" />
                                                 <label >password</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="btn btn-primary" href="index.html">Login</a>
-                                                 <button type="submit">Login</button>
+                                                
+                                                <button class="btn btn-primary" type="submit">Login</button>
                                             </div>
                                         </form>
                                     </div>
